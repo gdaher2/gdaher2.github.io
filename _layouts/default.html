@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ page.title }} | {{ site.title }}</title>
+  <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
+</head>
+<body>
+
+<nav>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="{{ '/' | relative_url }}">Home</a></li>
+    <li><a class="nav-link" href="{{ '/resume.html' | relative_url }}">Resume</a></li>
+
+    <!-- Projects dropdown -->
+    <li class="nav-dropdown">
+      <button type="button" class="nav-link nav-dropdown-toggle">
+        Projects ▾
+      </button>
+      <ul class="nav-dropdown-menu">
+        <li><a href="{{ '/projects/project1.html' | relative_url }}">Project 1</a></li>
+        <li><a href="{{ '/projects/project2.html' | relative_url }}">Project 2</a></li>
+        <li><a href="{{ '/projects/project3.html' | relative_url }}">Project 3</a></li>
+        <li><a href="{{ '/projects/project4.html' | relative_url }}">Project 4</a></li>
+        <li><a href="{{ '/projects/project5.html' | relative_url }}">Project 5</a></li>
+        <li><a href="{{ '/projects/project6.html' | relative_url }}">Project 6</a></li>
+        <li><a href="{{ '/projects/project7.html' | relative_url }}">Project 7</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+<main>
+  {{ content }}
+</main>
+
+<script>
+  // Simple click-to-toggle dropdown behavior
+  document.addEventListener('DOMContentLoaded', function () {
+    var toggles = document.querySelectorAll('.nav-dropdown-toggle');
+
+    toggles.forEach(function (toggle) {
+      toggle.addEventListener('click', function (e) {
+        e.preventDefault(); // prevents any default action, so "does nothing" navigation-wise
+        var parent = this.closest('.nav-dropdown');
+        parent.classList.toggle('open');
+      });
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function (e) {
+      document.querySelectorAll('.nav-dropdown.open').forEach(function (drop) {
+        if (!drop.contains(e.target)) {
+          drop.classList.remove('open');
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
