@@ -2,38 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{{ page.title }} | {{ site.title }}</title>
+  <title>George Daher Portfolio</title>
   <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
 </head>
 <body>
 
+<header>
+  
 <nav>
+  <span class="site-title">George Daher - Portfolio</span>
   <ul class="nav-list">
     <li><a class="nav-link" href="{{ '/' | relative_url }}">Home</a></li>
     <li><a class="nav-link" href="{{ '/resume.html' | relative_url }}">Resume</a></li>
-
     <li class="nav-dropdown">
-      <button type="button" class="nav-link nav-dropdown-toggle">
-        Projects ▾
-      </button>
+      <a class="nav-link" href="{{ '/projects.html' | relative_url }}">Projects ▾</a>
       <ul class="nav-dropdown-menu">
-        <li><a href="{{ '/projects/project1.html' | relative_url }}">Project 1: IMDB Ratings</a></li>
-        <li><a href="{{ '/projects/project2.html' | relative_url }}">Project 2: MLB Lineups</a></li>
-        <li><a href="{{ '/projects/project3.html' | relative_url }}">Project 3: DataFest 2023</a></li>
-        <li><a href="{{ '/projects/project4.html' | relative_url }}">Project 4: Simulation Study</a></li>
-        <li><a href="{{ '/projects/project5.html' | relative_url }}">Project 5: DataFest 2024</a></li>
-        <li><a href="{{ '/projects/project6.html' | relative_url }}">Project 6: FEC Elections</a></li>
-        <li><a href="{{ '/projects/project7.html' | relative_url }}">Project 7: PCA Decomposition</a></li>
+        <li><a href="{{ '/projects/project1.html' | relative_url }}">Project 1 – IMDB Ratings</a></li>
+        <li><a href="{{ '/projects/project2.html' | relative_url }}">Project 2 – MLB Lineups</a></li>
+        <li><a href="{{ '/projects/project3.html' | relative_url }}">Project 3 – DataFest 2023</a></li>
+        <li><a href="{{ '/projects/project4.html' | relative_url }}">Project 4 – Simulation Study</a></li>
+        <li><a href="{{ '/projects/project5.html' | relative_url }}">Project 5 – DataFest 2024</a></li>
+        <li><a href="{{ '/projects/project6.html' | relative_url }}">Project 6 – FEC Elections</a></li>
+        <li><a href="{{ '/projects/project7.html' | relative_url }}">Project 7 – PCA Decomposition</a></li>
       </ul>
     </li>
   </ul>
 </nav>
+
+</header>
 
 <main>
   {{ content }}
 </main>
 
 <script>
+  // Dropdown behavior for Projects menu
   document.addEventListener('DOMContentLoaded', function () {
     var toggles = document.querySelectorAll('.nav-dropdown-toggle');
 

@@ -21,7 +21,7 @@
 title: George Daher's Portfolio
 email: your-email@example.com
 description: >- # this means to ignore newlines until "baseurl:"
-  George Daher's Portfolio including past school and independent projects.
+  George Daher's Portfolio of past projects.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: gdaher2
