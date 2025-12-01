@@ -1,56 +1,69 @@
 ---
 layout: project
-title: Project 1
+title: Project 1 – IMDB Ratings Analysis
 ---
 
 <h2>Project Overview</h2>
 
 <div class="blurb-section">
-
-  <div class="blurb-image-left">
-    <img src="/assets/img/project1-blurb-left.jpg" alt="Left blurb image for project 1">
-    <p class="caption-small">[Caption for left blurb image]</p>
-  </div>
-
   <div class="blurb-text">
     <p>
-      [Insert 3–6 sentence blurb about Project 1: what the project is, tools used, decisions made, and key results.]
+      This project is an analysis of Internet Movie Database (IMDB) movie ratings,
+      focusing on whether genre, popularity, and runtime are associated with
+      differences in IMDB ratings. I completed it for an introductory statistical
+      methods course, and it was one of my first end‑to‑end projects using R on a
+      real, non‑curated dataset scraped directly from IMDB.
+    </p>
+    <p>
+      I cleaned and manipulated the data in R and primarily relied on multiple
+      regression and ANOVA to investigate relationships between predictors and
+      ratings. While the final model did not yield strong or statistically
+      significant effects, the experience of wrestling with messy real‑world
+      data, checking assumptions, and exploring different model specifications
+      was extremely valuable.
+    </p>
+    <p>
+      Even though the analysis itself was not especially groundbreaking, this
+      project built my comfort with R, data wrangling, and iterative model
+      building. It also reinforced that not every dataset produces neat,
+      publishable results, but there is still a lot to learn from the process.
     </p>
   </div>
-
-  <div class="blurb-image-right">
-    <img src="/assets/img/project1-blurb-right.jpg" alt="Right blurb image for project 1">
-    <p class="caption-small">[Caption for right blurb image]</p>
-  </div>
-
 </div>
 
 <hr>
 
-<h2>Images</h2>
+<h2>Key Visuals</h2>
 
 <div class="project-image">
-  <img src="/assets/img/project1-image1.jpg" alt="Project 1 image 1">
-  <p class="caption">[Caption for image 1]</p>
+  <img src="{{ '/assets/img/Project1_GenreFrequency.png' | relative_url }}" alt="Genre frequency plot">
+  <p class="caption">
+    This shows a breakdown of the most frequent combinations of genres considered in the analysis.
+  </p>
 </div>
 
 <div class="project-image">
-  <img src="/assets/img/project1-image2.jpg" alt="Project 1 image 2">
-  <p class="caption">[Caption for image 2]</p>
+  <img src="{{ '/assets/img/Project1_QuantitativePredictorPlots.png' | relative_url }}" alt="Quantitative predictor plots">
+  <p class="caption">
+    These quantitative plots suggest a hint of potential trends, but not clear enough patterns to support strong conclusions.
+  </p>
+</div>
+
+<div class="project-image">
+  <img src="{{ '/assets/img/Project1_Model.png' | relative_url }}" alt="Final model summary">
+  <p class="caption">
+    The final regression model, which was not statistically significant and highlighted the limits of the available data.
+  </p>
 </div>
 
 <hr>
 
-<h2>Project Report</h2>
+<h2>Report</h2>
 
 <div class="embed-container">
   <iframe 
-    src="{{ '/assets/pdfs/Project1_ImdbRatings.pdf' | relative_url }}" 
+    src="{{ '/assets/pdfs/Project1_Report.pdf' | relative_url }}"
     width="100%" 
     height="600px">
   </iframe>
 </div>
-
-<hr>
-
-<a href="{ '/' | relative_url }">&larr; Back to Home</a>

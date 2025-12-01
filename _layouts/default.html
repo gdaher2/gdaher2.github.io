@@ -12,19 +12,18 @@
     <li><a class="nav-link" href="{{ '/' | relative_url }}">Home</a></li>
     <li><a class="nav-link" href="{{ '/resume.html' | relative_url }}">Resume</a></li>
 
-    <!-- Projects dropdown -->
     <li class="nav-dropdown">
       <button type="button" class="nav-link nav-dropdown-toggle">
         Projects ▾
       </button>
       <ul class="nav-dropdown-menu">
-        <li><a href="{{ '/projects/project1.html' | relative_url }}">Project 1</a></li>
-        <li><a href="{{ '/projects/project2.html' | relative_url }}">Project 2</a></li>
-        <li><a href="{{ '/projects/project3.html' | relative_url }}">Project 3</a></li>
-        <li><a href="{{ '/projects/project4.html' | relative_url }}">Project 4</a></li>
-        <li><a href="{{ '/projects/project5.html' | relative_url }}">Project 5</a></li>
-        <li><a href="{{ '/projects/project6.html' | relative_url }}">Project 6</a></li>
-        <li><a href="{{ '/projects/project7.html' | relative_url }}">Project 7</a></li>
+        <li><a href="{{ '/projects/project1.html' | relative_url }}">Project 1: IMDB Ratings</a></li>
+        <li><a href="{{ '/projects/project2.html' | relative_url }}">Project 2: MLB Lineups</a></li>
+        <li><a href="{{ '/projects/project3.html' | relative_url }}">Project 3: DataFest 2023</a></li>
+        <li><a href="{{ '/projects/project4.html' | relative_url }}">Project 4: Simulation Study</a></li>
+        <li><a href="{{ '/projects/project5.html' | relative_url }}">Project 5: DataFest 2024</a></li>
+        <li><a href="{{ '/projects/project6.html' | relative_url }}">Project 6: FEC Elections</a></li>
+        <li><a href="{{ '/projects/project7.html' | relative_url }}">Project 7: PCA Decomposition</a></li>
       </ul>
     </li>
   </ul>
@@ -35,19 +34,17 @@
 </main>
 
 <script>
-  // Simple click-to-toggle dropdown behavior
   document.addEventListener('DOMContentLoaded', function () {
     var toggles = document.querySelectorAll('.nav-dropdown-toggle');
 
     toggles.forEach(function (toggle) {
       toggle.addEventListener('click', function (e) {
-        e.preventDefault(); // prevents any default action, so "does nothing" navigation-wise
+        e.preventDefault();
         var parent = this.closest('.nav-dropdown');
         parent.classList.toggle('open');
       });
     });
 
-    // Close dropdown when clicking outside
     document.addEventListener('click', function (e) {
       document.querySelectorAll('.nav-dropdown.open').forEach(function (drop) {
         if (!drop.contains(e.target)) {

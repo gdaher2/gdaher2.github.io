@@ -1,0 +1,344 @@
+---
+title: "Project Code (Analysis and Interpretation Included in Presentation)"
+author: "George Daher"
+date: "3/28/2023"
+output:
+  pdf_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,fig.height=4)
+# knitr::opts_chunk$set(dpi = 50) 
+knitr::opts_chunk$set(dev="png")
+knitr::opts_knit$set(root.dir = "C:/Users/gdahe/OneDrive/Documents/College/STAT 203/Project Data")
+```
+
+```{r}
+# Function that merges gamelogs and performance splits 
+# Calls Helper Function for Each of 9 lineup positions and both teams
+mergeLogsSplitsBref <- function(logs,splits) {
+  logs <- mergeLogSplitsBrefPosition(logs,splits,1,"visitor")
+  logs <- mergeLogSplitsBrefPosition(logs,splits,2,"visitor")
+  logs <- mergeLogSplitsBrefPosition(logs,splits,3,"visitor")
+  logs <- mergeLogSplitsBrefPosition(logs,splits,4,"visitor")
+  logs <- mergeLogSplitsBrefPosition(logs,splits,5,"visitor")
+  logs <- mergeLogSplitsBrefPosition(logs,splits,6,"visitor")
+  logs <- mergeLogSplitsBrefPosition(logs,splits,7,"visitor")
+  logs <- mergeLogSplitsBrefPosition(logs,splits,8,"visitor")
+  logs <- mergeLogSplitsBrefPosition(logs,splits,9,"visitor")
+  logs <- mergeLogSplitsBrefPosition(logs,splits,1,"home")
+  logs <- mergeLogSplitsBrefPosition(logs,splits,2,"home")
+  logs <- mergeLogSplitsBrefPosition(logs,splits,3,"home")
+  logs <- mergeLogSplitsBrefPosition(logs,splits,4,"home")
+  logs <- mergeLogSplitsBrefPosition(logs,splits,5,"home")
+  logs <- mergeLogSplitsBrefPosition(logs,splits,6,"home")
+  logs <- mergeLogSplitsBrefPosition(logs,splits,7,"home")
+  logs <- mergeLogSplitsBrefPosition(logs,splits,8,"home")
+  logs <- mergeLogSplitsBrefPosition(logs,splits,9,"home")
+}
+
+# Fixes Name Exceptions explicitly, then merges datasets
+mergeLogSplitsBrefPosition <- function(logs,splits,num,team) {
+  colnames(splits) <- paste0(team,num,colnames(splits))
+  logs[,paste0(team,num,"Name")] <- gsub("\\.","",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("i-M","i M",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("n-J","n J",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Dee Gordon","Dee Strange-Gordon",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Giovanny Urshela","Gio Urshela",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Michael Taylor","Michael A. Taylor",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Vincent Velasquez","Vince Velasquez",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Michael Brosseau","Mike Brosseau",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Nate Lowe","Nathanial Lowe",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Phillip Ervin","Phil Ervin",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Josh Fuentes","Joshua Fuentes",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Yulieski Gurriel","Yuli Gurriel",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Steve Wilkerson","Stevie Wilkerson",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Mike Soroka","Michael Soroka",logs[,paste0(team,num,"Name")])
+  return(merge(x=logs,y=splits,by.x=paste0(team,num,"Name"),by.y=paste0(team,num,"Name")))
+}
+
+```
+
+## Background
+
+All the data used is pulled from either baseball reference using the baseballr R package, or from Retrosheet game logs. All the data in both databases is complete for the years (2012 to 2019) that we are considering in our analysis. The objective of our analysis is to determine whether there exists a predictive relationship between previous hitting statistics and order in the lineup for hitters/lineups in the MLB. 
+
+## Cleaning the Data
+
+Define helper functions to clean data (included in EDA)
+
+```{r,include=TRUE,message=FALSE}
+library(baseballr); library(janitor); library(RcppParallel); library(lubridate);library(dplyr);library(stringr)
+# Renames and Drops Columns in Gamelogs
+cleanLogs <- function(logs) {
+  outlogs <- logs[-c(2:3,12:89,94:105,160:161)]
+  colnames(outlogs) <- c("Date","VisitingTeam","VisitingTeamLeague","VisitingGameNum","HomeTeam",
+                          "HomeTeamLeague","HomeGameNum","VisitingScore","HomeScore","visitingManagerID",
+                          "visitingManagerName","homeManagerID","homeManagerName",
+                          "visitor1ID","visitor1Name","visitor1Position",
+                          "visitor2ID","visitor2Name","visitor2Position",
+                          "visitor3ID","visitor3Name","visitor3Position",
+                          "visitor4ID","visitor4Name","visitor4Position",
+                          "visitor5ID","visitor5Name","visitor5Position",
+                          "visitor6ID","visitor6Name","visitor6Position",
+                          "visitor7ID","visitor7Name","visitor7Position",
+                          "visitor8ID","visitor8Name","visitor8Position",
+                          "visitor9ID","visitor9Name","visitor9Position",
+                          "home1ID","home1Name","home1Position",
+                          "home2ID","home2Name","home2Position",
+                          "home3ID","home3Name","home3Position",
+                          "home4ID","home4Name","home4Position",
+                          "home5ID","home5Name","home5Position",
+                          "home6ID","home6Name","home6Position",
+                          "home7ID","home7Name","home7Position",
+                          "home8ID","home8Name","home8Position",
+                          "home9ID","home9Name","home9Position")
+  return(outlogs)
+}
+# Prepares the data for merging based on the previous year
+yearSplits <- function(year) {
+  splits <- data.frame(bref_daily_batter(paste(year,"01","01",sep="-"),paste(year,"12","31",sep="-")))
+  splits <- splits[-c(1:2,4,5)]
+  splits$Name <- iconv(splits$Name,from="UTF-8",to="ASCII//TRANSLIT")
+  splits$Name <- str_replace_all(splits$Name," Jr\\.","")
+  return(splits)
+}
+
+# Merges Performance Splits overall all players in each lineup position
+mergeAll <- function(logs,splits) {
+  out <- mergePosition(logs,splits,"visitor",1)
+  out <- rbind(out,mergePosition(logs,splits,"visitor",2))
+  out <- rbind(out,mergePosition(logs,splits,"visitor",3))
+  out <- rbind(out,mergePosition(logs,splits,"visitor",4))
+  out <- rbind(out,mergePosition(logs,splits,"visitor",5))
+  out <- rbind(out,mergePosition(logs,splits,"visitor",6))
+  out <- rbind(out,mergePosition(logs,splits,"visitor",7))
+  out <- rbind(out,mergePosition(logs,splits,"visitor",8))
+  out <- rbind(out,mergePosition(logs,splits,"visitor",9))
+  out <- rbind(out,mergePosition(logs,splits,"home",1))
+  out <- rbind(out,mergePosition(logs,splits,"home",2))
+  out <- rbind(out,mergePosition(logs,splits,"home",3))
+  out <- rbind(out,mergePosition(logs,splits,"home",4))
+  out <- rbind(out,mergePosition(logs,splits,"home",5))
+  out <- rbind(out,mergePosition(logs,splits,"home",6))
+  out <- rbind(out,mergePosition(logs,splits,"home",7))
+  out <- rbind(out,mergePosition(logs,splits,"home",8))
+  out <- rbind(out,mergePosition(logs,splits,"home",9))
+}
+# Handles 
+mergePosition <- function(logs,splits,team,num){
+  logs[,paste0(team,num,"Name")] <- gsub("\\.","",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("i-M","i M",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("n-J","n J",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Dee Gordon","Dee Strange-Gordon",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Giovanny Urshela","Gio Urshela",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Michael Taylor","Michael A. Taylor",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Vincent Velasquez","Vince Velasquez",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Michael Brosseau","Mike Brosseau",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Nate Lowe","Nathanial Lowe",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Phillip Ervin","Phil Ervin",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Josh Fuentes","Joshua Fuentes",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Yulieski Gurriel","Yuli Gurriel",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Steve Wilkerson","Stevie Wilkerson",logs[,paste0(team,num,"Name")])
+  logs[,paste0(team,num,"Name")] <- gsub("Mike Soroka","Michael Soroka",logs[,paste0(team,num,"Name")])
+  out <- merge(splits,logs,by.x="Name",by.y=paste0(team,num,"Name"))
+  out <- mutate(out[,c(1:35,37,39)],homeAway=team,lineupPosition=as.numeric(num))
+}
+```
+
+Import/Merge Data (included in EDA)
+
+```{r}
+gl2012 <- cleanLogs(read.csv("gl2012.txt", header=FALSE))
+gl2013 <- cleanLogs(read.csv("gl2013.txt", header=FALSE))
+gl2014 <- cleanLogs(read.csv("gl2014.txt", header=FALSE))
+gl2015 <- cleanLogs(read.csv("gl2015.txt", header=FALSE))
+gl2016 <- cleanLogs(read.csv("gl2016.txt", header=FALSE))
+gl2017 <- cleanLogs(read.csv("gl2017.txt", header=FALSE))
+gl2018 <- cleanLogs(read.csv("gl2018.txt", header=FALSE))
+gl2019 <- cleanLogs(read.csv("gl2019.txt", header=FALSE))
+#split2012 <- yearSplits(2012)
+#write.csv(split2012,"splits2012.csv")
+split2012 <- read.csv("splits2012.csv")
+#split2013 <- yearSplits(2013)
+#write.csv(split2013,"splits2013.csv")
+split2013 <- read.csv("splits2013.csv")
+#split2014 <- yearSplits(2014)
+#write.csv(split2014,"splits2014.csv")
+split2014 <- read.csv("splits2014.csv")
+#split2015 <- yearSplits(2015)
+#write.csv(split2015,"splits2015.csv")
+split2015 <- read.csv("splits2015.csv")
+#split2016 <- yearSplits(2016)
+#write.csv(split2016,"splits2016.csv")
+split2016 <- read.csv("splits2016.csv")
+#split2017 <- yearSplits(2017)
+#write.csv(split2017,"splits2017.csv")
+split2017 <- read.csv("splits2017.csv")
+#split2018 <- yearSplits(2018)
+#write.csv(split2018,"splits2018.csv")
+split2018 <- read.csv("splits2018.csv")
+#split2019 <- yearSplits(2019)
+#write.csv(split2019,"splits2019.csv")
+split2019 <- read.csv("splits2019.csv")
+
+master <- mergeAll(gl2012,split2012)
+master <- rbind(master,mergeAll(gl2013,split2013))
+master <- rbind(master,mergeAll(gl2014,split2014))
+master <- rbind(master,mergeAll(gl2015,split2015))
+master <- rbind(master,mergeAll(gl2016,split2016))
+master <- rbind(master,mergeAll(gl2017,split2017))
+master <- rbind(master,mergeAll(gl2018,split2018))
+master <- rbind(master,mergeAll(gl2019,split2019))
+
+matched <- mergeLogsSplitsBref(gl2012,split2012)
+matched <- rbind(matched,mergeLogsSplitsBref(gl2013,split2013))
+matched <- rbind(matched,mergeLogsSplitsBref(gl2014,split2014))
+matched <- rbind(matched,mergeLogsSplitsBref(gl2015,split2015))
+matched <- rbind(matched,mergeLogsSplitsBref(gl2016,split2016))
+matched <- rbind(matched,mergeLogsSplitsBref(gl2017,split2017))
+matched <- rbind(matched,mergeLogsSplitsBref(gl2018,split2018))
+matched <- rbind(matched,mergeLogsSplitsBref(gl2019,split2019))
+# Prepared Dataset for Matched Paris Analysis was Never Used
+```
+
+
+This section is used to trim the non-qualified hitters from the dataset and was previously used to investigate transformation and standardization of data with year by year rate and summary statistics for the entire league. Unfortunately these did not improve the normality of the dataset so we decided not to use them.
+```{r}
+#yearByYearAverages <- read.csv("yearByYearAverages.csv")
+#yearByYearTotals <- read.csv("yearByYearTotals.csv")
+dataset2 <- master[(master$PA/(162)) > 3,]
+#dataset3 <- dataset2[dataset2$BA < median(dataset2$BA)+3*sd(ma),]
+write.csv(dataset2,"compiledDataset.csv")
+```
+This chunk can be used to loaded the full dataset instead of compiling it separately from the component files. 
+```{r}
+dataset2 <- read.csv("compiledDataset.csv")
+```
+
+Correlation Data (included in EDA)
+```{r}
+cor <- cor(dataset2[,c(24:27)],use="complete.obs")
+cor
+```
+
+
+Investigate Normality of Explanatory Variables with Histograms and Q-Q Plots
+```{r,fig.height=6}
+par(mfrow=c(2,2))
+imain=c(24:27)
+for(i in imain){
+  hist(dataset2[,i],main=paste0("Histogram for ",names(dataset2[i])),xlab=names(dataset2[i]))
+}
+for(i in imain){
+  qqnorm(dataset2[,i],main=paste0("Q-Q Plot for ",names(dataset2[i])),xlab=names(dataset2[i]))
+  qqline(dataset2[,i])
+}
+par(mfrow=c(1,1))
+```
+
+One Way ANOVA Between Each Explanatory Variable and Lineup Position
+```{r}
+par(mfrow=c(2,2))
+for(i in imain) {
+  print(paste0("ANOVA for ",names(dataset2[i])))
+  print(summary(aov(dataset2[,i] ~ factor(lineupPosition),data=dataset2)))
+}
+par(mfrow=c(1,1))
+```
+
+One Variable Linear Regression Between Each Explanatory Variable and Lineup Position
+```{r}
+par(mfrow=c(2,2))
+for(i in imain) {
+  #plot(lm(lineupPosition ~ dataset2[,i],data=dataset2))
+  print(paste0("Linear Regression for ",names(dataset2[i])))
+  print(summary(lm(lineupPosition ~ dataset2[,i],data=dataset2)))
+  print("  ")
+}
+par(mfrow=c(1,1))
+```
+
+Multiple Regression with Interaction Effects (and added confounding effect of number of games that the player played in the previous season)
+```{r}
+temp <- lm(lineupPosition ~ BA*OBP*SLG*OPS*G,data=dataset2)
+summary(temp)
+par(mfrow=c(2,2))
+plot(temp)
+par(mfrow=c(1,1))
+```
+
+Comparing OBP of 1 and 2 vs the rest
+```{r}
+obp12 <- dataset2[dataset2$lineupPosition < 3,]
+obp12 <- obp12$OBP
+summary(obp12)
+obpNot12 <- dataset2[dataset2$lineupPosition > 2,]
+obpNot12 <- obpNot12$OBP
+summary(obp12)
+t.test(obp12,obpNot12,alternative="greater", var.equal=TRUE)
+#ggttest(t.test(obp12,obpNot12,alternative="greater", var.equal=TRUE))
+```
+
+Comparing OPS of 3 vs the rest
+```{r}
+ops3 <- dataset2[dataset2$lineupPosition == 3,]
+ops3<- ops3$OPS
+summary(ops3)
+opsNot3 <- dataset2[dataset2$lineupPosition != 3,]
+opsNot3 <- opsNot3$OPS
+summary(opsNot3)
+t.test(ops3,opsNot3,alternative="greater", var.equal=TRUE) 
+```
+
+Comparing OPS of 3 vs 1 & 2
+```{r}
+summary(ops3)
+ops12 <- dataset2[dataset2$lineupPosition < 3,]
+ops12 <- ops12$OPS
+summary(ops12)
+t.test(ops3,ops12,alternative="greater", var.equal=TRUE) 
+```
+
+Compare SLG of 4 & 5 vs Rest
+```{r}
+slg4 <- dataset2[dataset2$lineupPosition == 4 | dataset2$lineupPosition == 5,]
+slg4 <- slg4$SLG
+summary(slg4)
+slgNot4 <- dataset2[dataset2$lineupPosition != 4,]
+slgNot4 <- slgNot4$SLG
+summary(slgNot4)
+t.test(slg4,slgNot4,alternative="greater",var.equal=TRUE)
+```
+Comparing SLG of 4 & 5 to 1,2,3
+```{r}
+slg123 <- dataset2[dataset2$lineupPosition <= 3,]
+slg123 <- slg123$SLG
+summary(slg123)
+t.test(slg4,slg123,alternative="greater",var.equal=TRUE)
+```
+
+Check whether the rest of the lineup is ordered from best hitter to worst hitter
+```{r}
+endOfLineup <- dataset2[dataset2$lineupPosition > 5,]
+plot(lineupPosition ~ OPS,data=endOfLineup)
+temp <- lm(lineupPosition ~ OPS,data=endOfLineup)
+summary(temp)
+par(mfrow=c(2,2))
+plot(temp)
+par(mfrow=c(1,1))
+```
+
+Attempt at Box-Cox Transformation (not used)
+```{r}
+library(MASS)
+#qqPlot(sqrt(dataset2$OPSplus_alt))
+#summary(dataset2$OPSplus_alt)
+bc <- boxcox(lineupPosition ~ OPS, data=dataset2)
+lambda <- bc$x[which.max(bc$y)]
+print(lambda)
+temp2 <- lm(((lineupPosition^lambda-1)/lambda) ~ OPS,dataset2)
+qqnorm(temp2$residuals)
+qqline(temp2$residuals)
+summary(temp2)
+```
+

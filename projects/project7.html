@@ -1,52 +1,42 @@
 ---
 layout: project
-title: Project 7
+title: Project 7 – Principal Component Decomposition
 ---
 
 <h2>Project Overview</h2>
 
 <div class="blurb-section">
-
-  <div class="blurb-image-left">
-    <img src="/assets/img/project7-blurb-left.jpg" alt="Left blurb image for project 7">
-    <p class="caption-small">[Caption for left blurb image]</p>
-  </div>
-
   <div class="blurb-text">
     <p>
-      [Insert 3–6 sentence blurb about Project 7: what the project is, tools used, decisions made, and key results.]
+      This project is an examination of Principal Component Decomposition (PCD)
+      as a method for analyzing and compressing high‑dimensional data, with a
+      particular focus on images. I completed it for an advanced statistical
+      methods course in order to deepen my understanding of both the linear
+      algebra and the statistical intuition behind PCD.
+    </p>
+    <p>
+      Using R, I demonstrated how images can be decomposed into principal
+      components and then reconstructed using different numbers of components.
+      By comparing reconstructions across images with varying symmetry and visual
+      complexity, I explored how the underlying structure of an image influences
+      how efficiently it can be represented with a small number of components.
+    </p>
+    <p>
+      The project was especially rewarding because it bridged coursework in
+      statistics and linear algebra. The visual nature of the results also made
+      it easier to interpret what the principal components were capturing and
+      how much information was lost when truncating the decomposition.
     </p>
   </div>
-
-  <div class="blurb-image-right">
-    <img src="/assets/img/project7-blurb-right.jpg" alt="Right blurb image for project 7">
-    <p class="caption-small">[Caption for right blurb image]</p>
-  </div>
-
 </div>
 
 <hr>
 
-<h2>Images</h2>
-
-<div class="project-image">
-  <img src="/assets/img/project7-image1.jpg" alt="Project 7 image 1">
-  <p class="caption">[Caption for image 1]</p>
-</div>
-
-<div class="project-image">
-  <img src="/assets/img/project7-image2.jpg" alt="Project 7 image 2">
-  <p class="caption">[Caption for image 2]</p>
-</div>
-
-<hr>
-
-<h2>Embedded PDF</h2>
-<p>[PDF placeholder at <code>/assets/pdfs/project7.pdf</code>]</p>
+<h2>Report</h2>
 
 <div class="embed-container">
   <iframe 
-    src="/assets/pdfs/project7.pdf" 
+    src="{{ '/assets/pdfs/Project7_Report.pdf' | relative_url }}"
     width="100%" 
     height="600px">
   </iframe>
@@ -54,31 +44,16 @@ title: Project 7
 
 <hr>
 
-<h2>Google Slides Presentation</h2>
-
-<p>
-  Replace the <code>src</code> below with your Google Slides embed link for Project 7.
-</p>
-
-<div class="embed-container">
-  <iframe 
-    src="https://docs.google.com/presentation/d/e/INSERT_EMBED_ID_FOR_PROJECT_7/embed?start=false&loop=false"
-    frameborder="0" 
-    width="100%" 
-    height="500px" 
-    allowfullscreen>
-  </iframe>
-</div>
-
-<hr>
-
 <h2>Additional Files</h2>
 <ul>
-  <li><a href="/assets/files/project7-dataset.csv" download>[Dataset CSV]</a></li>
-  <li><a href="/assets/files/project7-code.py" download>[Python script]</a></li>
-  <li><a href="/assets/files/project7-summary.xlsx" download>[Excel results]</a></li>
+  <li>
+    <a href="{{ '/assets/pdfs/Project7_ReportFull.pdf' | relative_url }}" download>
+      Project7_ReportFull.pdf (full report)
+    </a>
+  </li>
+  <li>
+    <a href="{{ '/assets/files/Project7_Report_Unknit.Rmd' | relative_url }}" download>
+      Project7_Report_Unknit.Rmd (un‑knit R Markdown source)
+    </a>
+  </li>
 </ul>
-
-<hr>
-
-<a href="{ '/' | relative_url }">&larr; Back to Home</a>

@@ -1,68 +1,41 @@
 ---
 layout: project
-title: Project 4
+title: Project 4 – Simulation Study of Parametric vs Nonparametric
 ---
 
 <h2>Project Overview</h2>
 
 <div class="blurb-section">
-
-  <div class="blurb-image-left">
-    <img src="/assets/img/project4-blurb-left.jpg" alt="Left blurb image for project 4">
-    <p class="caption-small">[Caption for left blurb image]</p>
-  </div>
-
   <div class="blurb-text">
     <p>
-      [Insert 3–6 sentence blurb about Project 4: what the project is, tools used, decisions made, and key results.]
+      This project is a simulation study comparing the performance of parametric
+      and nonparametric methods in different data‑generating scenarios. In
+      particular, I studied Welch’s t‑test versus the Mann–Whitney–Wilcoxon rank
+      sum test under varying distributional shapes, tail behavior, and effect sizes.
+    </p>
+    <p>
+      The simulations were written in R and examined power and type I error across
+      a range of sample sizes, asymmetries, and kurtoses. By systematically
+      varying these conditions, I could see when the parametric assumptions held
+      reasonably well and when nonparametric methods provided a more robust
+      alternative.
+    </p>
+    <p>
+      This was my first full simulation study, and it required careful design of
+      the data‑generating mechanisms as well as efficient code for running and
+      summarizing thousands of iterations. It deepened both my understanding of
+      the underlying theory and my comfort translating that theory into code.
     </p>
   </div>
-
-  <div class="blurb-image-right">
-    <img src="/assets/img/project4-blurb-right.jpg" alt="Right blurb image for project 4">
-    <p class="caption-small">[Caption for right blurb image]</p>
-  </div>
-
 </div>
 
 <hr>
 
-<h2>Images</h2>
-
-<div class="project-image">
-  <img src="/assets/img/project4-image1.jpg" alt="Project 4 image 1">
-  <p class="caption">[Caption for image 1]</p>
-</div>
-
-<div class="project-image">
-  <img src="/assets/img/project4-image2.jpg" alt="Project 4 image 2">
-  <p class="caption">[Caption for image 2]</p>
-</div>
-
-<hr>
-
-<h2>Embedded PDF</h2>
-<p>[PDF placeholder at <code>/assets/pdfs/project4.pdf</code>]</p>
+<h2>Slides (via Google Slides)</h2>
 
 <div class="embed-container">
   <iframe 
-    src="/assets/pdfs/project4.pdf" 
-    width="100%" 
-    height="600px">
-  </iframe>
-</div>
-
-<hr>
-
-<h2>Google Slides Presentation</h2>
-
-<p>
-  Replace the <code>src</code> below with your Google Slides embed link for Project 4.
-</p>
-
-<div class="embed-container">
-  <iframe 
-    src="https://docs.google.com/presentation/d/e/INSERT_EMBED_ID_FOR_PROJECT_4/embed?start=false&loop=false"
+    src="https://docs.google.com/presentation/d/e/INSERT_PROJECT4_GOOGLE_SLIDES_ID/embed?start=false&loop=false"
     frameborder="0" 
     width="100%" 
     height="500px" 
@@ -72,13 +45,12 @@ title: Project 4
 
 <hr>
 
-<h2>Additional Files</h2>
-<ul>
-  <li><a href="/assets/files/project4-dataset.csv" download>[Dataset CSV]</a></li>
-  <li><a href="/assets/files/project4-code.py" download>[Python script]</a></li>
-  <li><a href="/assets/files/project4-summary.xlsx" download>[Excel results]</a></li>
-</ul>
+<h2>Report</h2>
 
-<hr>
-
-<a href="{ '/' | relative_url }">&larr; Back to Home</a>
+<div class="embed-container">
+  <iframe 
+    src="{{ '/assets/pdfs/Project4_Report.pdf' | relative_url }}"
+    width="100%" 
+    height="600px">
+  </iframe>
+</div>

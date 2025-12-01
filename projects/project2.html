@@ -1,68 +1,59 @@
 ---
 layout: project
-title: Project 2
+title: Project 2 – MLB Lineup Construction
 ---
 
 <h2>Project Overview</h2>
 
 <div class="blurb-section">
-
-  <div class="blurb-image-left">
-    <img src="/assets/img/project2-blurb-left.jpg" alt="Left blurb image for project 2">
-    <p class="caption-small">[Caption for left blurb image]</p>
-  </div>
-
   <div class="blurb-text">
     <p>
-      [Insert 3–6 sentence blurb about Project 2: what the project is, tools used, decisions made, and key results.]
+      This project analyzes Major League Baseball (MLB) lineup construction and how
+      hitter statistics vary by lineup position. Working with a partner, I hoped
+      to build a model for optimal lineup construction, but the complexity of the
+      problem and our level of statistical training led us to focus on describing
+      and confirming existing patterns instead.
+    </p>
+    <p>
+      We used R throughout, drawing on data from RetroSheet and Baseball Reference,
+      connected via the BaseballR package. A large portion of the work involved
+      merging and aligning the two datasets, which required careful reformatting
+      and explicit handling of inconsistencies in player names and identifiers.
+    </p>
+    <p>
+      Ultimately, we confirmed several classic ideas about lineup construction:
+      hitters in the 1 and 2 spots tended to have the highest on‑base percentages,
+      the 3‑hole hitter was often the best overall, and the 4 and 5 spots housed
+      the strongest power hitters. More than anything, the project reinforced the
+      importance of data cleaning, using multiple data sources, and supplementing
+      analysis with background research.
     </p>
   </div>
-
-  <div class="blurb-image-right">
-    <img src="/assets/img/project2-blurb-right.jpg" alt="Right blurb image for project 2">
-    <p class="caption-small">[Caption for right blurb image]</p>
-  </div>
-
 </div>
 
 <hr>
 
-<h2>Images</h2>
+<h2>Key Visuals</h2>
 
 <div class="project-image">
-  <img src="/assets/img/project2-image1.jpg" alt="Project 2 image 1">
-  <p class="caption">[Caption for image 1]</p>
-</div>
-
-<div class="project-image">
-  <img src="/assets/img/project2-image2.jpg" alt="Project 2 image 2">
-  <p class="caption">[Caption for image 2]</p>
-</div>
-
-<hr>
-
-<h2>Embedded PDF</h2>
-<p>[PDF placeholder at <code>/assets/pdfs/project2.pdf</code>]</p>
-
-<div class="embed-container">
-  <iframe 
-    src="/assets/pdfs/project2.pdf" 
-    width="100%" 
-    height="600px">
-  </iframe>
+  <img src="{{ '/assets/img/Project2_ExplicitMerge.png' | relative_url }}" alt="Explicit merge logic for MLB project">
+  <p class="caption">
+    This diagram shows the explicit merge solution we used to resolve name mismatches
+    between RetroSheet and Baseball Reference.
+  </p>
 </div>
 
 <hr>
 
-<h2>Google Slides Presentation</h2>
-
+<h2>Slides (via Google Slides)</h2>
 <p>
-  Replace the <code>src</code> below with your Google Slides embed link for Project 2.
+  A Google Slides version of the presentation can be embedded here by replacing the
+  <code>src</code> URL with the published Google Slides embed link.
 </p>
 
 <div class="embed-container">
   <iframe 
-    src="https://docs.google.com/presentation/d/e/INSERT_EMBED_ID_FOR_PROJECT_2/embed?start=false&loop=false"
+    src="https://docs.google.com/presentation/d/e/INSERT_PROJECT2_GOOGLE_SLIDES_ID/embed?start=false&loop=false"
     frameborder="0" 
     width="100%" 
     height="500px" 
@@ -72,13 +63,28 @@ title: Project 2
 
 <hr>
 
-<h2>Additional Files</h2>
-<ul>
-  <li><a href="/assets/files/project2-dataset.csv" download>[Dataset CSV]</a></li>
-  <li><a href="/assets/files/project2-code.py" download>[Python script]</a></li>
-  <li><a href="/assets/files/project2-summary.xlsx" download>[Excel results]</a></li>
-</ul>
+<h2>Report</h2>
+
+<div class="embed-container">
+  <iframe 
+    src="{{ '/assets/pdfs/Project2_EDAmarkdown.pdf' | relative_url }}"
+    width="100%" 
+    height="600px">
+  </iframe>
+</div>
 
 <hr>
 
-<a href="{ '/' | relative_url }">&larr; Back to Home</a>
+<h2>Code & Outputs</h2>
+<ul>
+  <li>
+    <a href="{{ '/assets/files/Project2_Code.Rmd' | relative_url }}" download>
+      Project2_Code.Rmd (analysis code, R Markdown)
+    </a>
+  </li>
+  <li>
+    <a href="{{ '/assets/pdfs/Project2_Code_Knit.pdf' | relative_url }}" download>
+      Project2_Code_Knit.pdf (knitted code output)
+    </a>
+  </li>
+</ul>
